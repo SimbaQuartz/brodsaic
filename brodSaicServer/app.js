@@ -3,8 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var mysql=requier('mysql');
-var firebase=requier('firebase');
+var mysql=require('mysql');
+var firebase=require('firebase');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

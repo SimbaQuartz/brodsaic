@@ -59,7 +59,6 @@ export default class Login extends React.Component {
     );
   }
     login=()=>{
-        alert(this.state.username);
         fetch('http://localhost:3000/users',{
             method:'POST',
             headers:{
