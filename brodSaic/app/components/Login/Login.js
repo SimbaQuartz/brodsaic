@@ -59,7 +59,8 @@ export default class Login extends React.Component {
     );
   }
     login=()=>{
-        fetch('http://localhost:3000/users',{
+
+        fetch('http://192.168.137.1:3000/users',{
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -67,18 +68,19 @@ export default class Login extends React.Component {
             },
             body: JSON.stringify({
                 username:this.state.username,
-                password:this.state.password
+                password:this.state.password,
             })
         }) //backend IP :')
 
-        .then((response)= response.json())
+        .then((response)=> response.json())
         .then((res)=>{
-            if(response.success===true){
+            alert(res.message);
+            if(res.success===true){
                 AsyncStorage.setItem('user',res.user);
                 this.props.navigation.navigate('Profile');
             }
             else{
-                alert(res.message);
+                // alert(res.message);
             }
         })
         .done();
