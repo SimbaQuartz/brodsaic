@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var mysql=requier('mysql');
+var firebase=requier('firebase');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
