@@ -9,14 +9,14 @@ import {
   AsyncStorage
 } from 'react-native';
 import {StackNavigator} from 'react-navigation';
-
+var tinp;
 export default class Profile extends React.Component {
 
     constructor(props){
         super(props);
         this.state ={
-            username: '',
-            password: ''
+            loggedInUser: '',
+            userType: ''
         }
     }
 
@@ -26,27 +26,32 @@ export default class Profile extends React.Component {
     
     _loadInitialState=async()=>{
         var value= await AsyncStorage.getItem('user');
+        var usertype= await AsyncStorage.getItem('userType');
+        this.setState({
+            userType: usertype
+          });
         if(value!==null){
             this.props.navigation.navigate('Profile');
         }
     }
 
     render() {
+        if(this.state.userType=="reciever"){
+            tinp=<Text>Welcome buddy</Text>
+        }
+        if(this.state.userType=="broadcaster"){
+            tinp=<TextInput
+            style={styles.textInput} placeholder='Username'
+            underlineColorAndroid='transparent'
+        />;
+        }
     return ( 
-        <KeyboardAvoidingView behavior='padding' style={styles.wrapper}>
-
+        
             <View style={styles.container}>
-                <Text style={styles.text}>This is you profile BrodSaic</Text>
-                
-                <TouchableOpacity
-                    style={styles.btn}
-                    onPress={this.login}>
-                    <Text>Let's Roll</Text>
-                </TouchableOpacity>
+                <Text style={styles.text}>This is you profile dear {this.state.userType}</Text>
+                {tinp}
             </View>
             
-
-        </KeyboardAvoidingView>
     );
   }
 

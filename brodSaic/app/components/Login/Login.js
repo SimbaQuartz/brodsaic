@@ -5,6 +5,7 @@ import {
   View,
   TextInput,
   KeyboardAvoidingView,
+  Keyboard,
   TouchableOpacity,
   AsyncStorage
 } from 'react-native';
@@ -25,6 +26,17 @@ export default class Login extends React.Component {
     }
     
     _loadInitialState=async()=>{
+
+        try {
+            const value = await AsyncStorage.getItem('@MySuperStore:key');
+            if (value !== null){
+              // We have data!!
+              console.log(value);
+            }
+          } catch (error) {
+            // Error retrieving data
+          }
+
         var value= await AsyncStorage.getItem('user');
         if(value!==null){
             this.props.navigation.navigate('Profile');
@@ -46,6 +58,7 @@ export default class Login extends React.Component {
                     style={styles.textInput} placeholder='Password'
                     onChangeText={(password)=>this.setState({password})}
                     underlineColorAndroid='transparent'
+                    secureTextEntry={true}
                 />
             <TouchableOpacity
                 style={styles.btn}
@@ -59,8 +72,7 @@ export default class Login extends React.Component {
     );
   }
     login=()=>{
-        alert(this.state.username);
-        fetch('http://localhost:3000/users',{
+        fetch('http://192.168.137.1:3000/users',{
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -68,14 +80,16 @@ export default class Login extends React.Component {
             },
             body: JSON.stringify({
                 username:this.state.username,
-                password:this.state.password
+                password:this.state.password,
             })
         }) //backend IP :')
 
-        .then((response)= response.json())
+        .then((response)=> response.json())
         .then((res)=>{
-            if(response.success===true){
+            if(res.success===true){
                 AsyncStorage.setItem('user',res.user);
+                AsyncStorage.setItem('userType',res.usertype);
+                AsyncStorage.setItem('loginSuccess',true);
                 this.props.navigation.navigate('Profile');
             }
             else{
