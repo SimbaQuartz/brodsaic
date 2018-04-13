@@ -16,23 +16,27 @@ var ref=admin.database().ref("/users");
 router.post('/', function(req, res, next) {
   usernameToFind=req.body.username;
   password=req.body.password;
+
   ref.child(usernameToFind).once('value', function(usersnapshot){
+
     // if data exists
     if (usersnapshot.exists()) {
+
       ref.child(usernameToFind).child("/password").on('value', function(passwordsnapshot){
+
         if(passwordsnapshot.val()===password){
           console.log(usersnapshot.child("/userType").val());
-          res.send({success:true,usertype:usersnapshot.child("/userType").val()});
+          res.send({success:true,usertype:usersnapshot.child("/userType").val(),nameOfUser:usersnapshot.child("/name").val()});
           
         }else {
           console.log(password);
           console.log(passwordsnapshot.val());
-          res.send({success:false,message:'Failed'});
+          res.send({success:false,message:'Password Incorrect'});
         }
       });
     } else {
 
-      res.send({message:'False'});
+      res.send({message:'User Do not Exists'});
     }
     exists=null;
   });
