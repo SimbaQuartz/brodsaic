@@ -27,18 +27,18 @@ export default class Login extends React.Component {
     
     _loadInitialState=async()=>{
 
-        try {
-            const value = await AsyncStorage.getItem('@MySuperStore:key');
-            if (value !== null){
-              // We have data!!
-              console.log(value);
-            }
-          } catch (error) {
-            // Error retrieving data
-          }
+        // try {
+        //     const value = await AsyncStorage.getItem('@MySuperStore:key');
+        //     if (value !== null){
+        //       // We have data!!
+        //       console.log(value);
+        //     }
+        //   } catch (error) {
+        //     // Error retrieving data
+        //   }
 
-        var value= await AsyncStorage.getItem('user');
-        if(value!==null){
+        var loginSuccess= await AsyncStorage.getItem('loginSuccess');
+        if(loginSuccess){
             this.props.navigation.navigate('Profile');
         }
     }
@@ -87,12 +87,14 @@ export default class Login extends React.Component {
         .then((response)=> response.json())
         .then((res)=>{
             if(res.success===true){
-                AsyncStorage.setItem('user',res.user);
+                AsyncStorage.setItem('user',this.state.username);
                 AsyncStorage.setItem('userType',res.usertype);
                 AsyncStorage.setItem('loginSuccess',true);
+                AsyncStorage.setItem('nameOfUser',res.nameOfUser);
                 this.props.navigation.navigate('Profile');
             }
             else{
+                AsyncStorage.setItem('loginSuccess',false);
                 alert(res.message);
             }
         })
@@ -131,5 +133,5 @@ const styles=StyleSheet.create({
         alignItems: 'center',
     }
 
-    
+
 })
