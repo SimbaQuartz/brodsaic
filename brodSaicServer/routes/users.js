@@ -4,13 +4,14 @@ var mysql=require('mysql');
 var firebase=require('firebase');
 var admin = require("firebase-admin");
 var exists;
-var serviceAccount = require("../../../brodsaic-firebase-adminsdk-kh401-a6b6a41075.json");
+var serviceAccount = require("../../../brodsaic-firebase-adminsdk-kh401-3a18a9964a.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://brodsaic.firebaseio.com"
 });
 var ref=admin.database().ref("/users");
+var brodref=admin.database().ref("/broadcastList");
 
 
 router.post('/', function(req, res, next) {
@@ -44,8 +45,26 @@ router.post('/', function(req, res, next) {
 });
 router.post('/getBroadcastList', function(req, res, next) {
 
-  ref.child(req.query.id).once('value', function(usersnapshot){
-    res.send(usersnapshot.child('/addedBroadcasts'));
+  ref.child(req.query.id).child('/addedBroadcasts').on('value', function(list){
+
+    
+    var userBroadcastMap=list.toJSON();
+    var userBroadcastlist=Object.keys(list.toJSON());
+
+    var availableBroadcastLists={};
+    
+    var a=brodref.on('value',function(brodcastSnapshot){
+      
+      userBroadcastlist.forEach(element => {
+        if(list.child(element).val()===true){
+          availableBroadcastLists[element]=brodcastSnapshot.child(element).toJSON();
+          
+        }
+      });
+    });
+    
+    console.log(availableBroadcastLists);    
+    res.send({userBroadcastList:availableBroadcastLists,success:true});
   });
 
   
