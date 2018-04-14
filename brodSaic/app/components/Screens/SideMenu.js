@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {NavigationActions} from 'react-navigation';
-import {ScrollView,StyleSheet, Text, View} from 'react-native';
+import {ScrollView,StyleSheet, Text, View,AsyncStorage,TouchableOpacity} from 'react-native';
 
 class SideMenu extends Component {
   navigateToScreen = (route) => () => {
@@ -9,6 +9,18 @@ class SideMenu extends Component {
       routeName: route
     });
     this.props.navigation.dispatch(navigateAction);
+  }
+  logoutNavigateToScreen = (route) => () => {
+    AsyncStorage.removeItem('user',null);
+    const navigateAction = NavigationActions.navigate({
+      routeName: route
+    });
+    this.props.navigation.dispatch(navigateAction);
+  }
+
+  logout = () => {
+    AsyncStorage.setItem('user',null);
+    this.navigateToScreen('Login');
   }
 
   render () {
@@ -40,7 +52,10 @@ class SideMenu extends Component {
           </View>
         </ScrollView>
         <View style={styles.footerContainer}>
-          <Text>This is my fixed footer</Text>
+            <TouchableOpacity
+                onPress={this.logoutNavigateToScreen('Login')}>
+                <Text>Let's Roll</Text>
+            </TouchableOpacity>
         </View>
       </View>
     );

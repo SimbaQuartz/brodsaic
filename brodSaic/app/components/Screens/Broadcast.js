@@ -1,5 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, View, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, AsyncStorage} from 'react-native';
+import {StyleSheet, Text, View, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, AsyncStorage,ScrollView,FlatList} from 'react-native';
+import {List,ListView} from 'react-native-elements';
 import {StackNavigator} from 'react-navigation';
 export default class Broadcast extends React.Component {
     constructor(props){
@@ -22,17 +23,32 @@ export default class Broadcast extends React.Component {
     }
     render() {
         this.broadcastList();
+        function listCreator(a){
+            var b;
+            for(i=0;i<a.length;i++){
+
+            }
+        }
     return ( 
-        <KeyboardAvoidingView behavior='padding' style={styles.wrapper}>
-            <View style={styles.container}>
-                <Text style={styles.header}>Broadcast Page</Text>
-            </View>
-        </KeyboardAvoidingView>
+        <List>
+            <FlatList
+                data={this.state.myBroadcastLists}
+                renderItem={({item})=>(
+                    <ListItem
+                        roundAvatar
+                        title={`${item.name}`}
+                        subtitle={item.operator}
+                    />
+                )
+
+                }
+            />
+        </List>
     );
   }
   broadcastList=()=>{
       console.log(this.state.username);
-        fetch(`http://192.168.137.1:3000/users/getBroadcastList?id=401603018`,{
+        fetch(`http://192.168.0.100:3000/users/getBroadcastList?id=401603018`,{
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -46,11 +62,15 @@ export default class Broadcast extends React.Component {
             if(res.success===true){
                 AsyncStorage.setItem('user',this.state.username);
                 AsyncStorage.setItem('loginSuccess',true);
-                this.props.navigation.navigate('Profile');
+                console.log(Object.keys(res.userBroadcastList));
+                AsyncStorage.setItem('myBroadcastLists',res.userBroadcastList);
+                this.setState({
+                    myBroadcastLists:res.userBroadcastList
+                });
             }
             else{
                 AsyncStorage.setItem('loginSuccess',false);
-                alert(res.message);
+                alert("Failed fetching Your broadcast Lists");
             }
         })
         .done();
@@ -85,5 +105,21 @@ const styles=StyleSheet.create({
         backgroundColor:'#f0f0ff',
         padding:20,
         alignItems: 'center',
-    }
+    },
+    navItemStyle: {
+        padding: 10
+      },
+      navSectionStyle: {
+        backgroundColor: 'lightgrey'
+      },
+      sectionHeadingStyle: {
+        paddingVertical: 10,
+        paddingHorizontal: 5
+      },
+      footerContainer: {
+        padding: 20,
+        backgroundColor: 'lightgrey'
+    
+    
+      }
 })
