@@ -42,5 +42,14 @@ router.post('/', function(req, res, next) {
   });
 
 });
+router.post('/getBroadcastList', function(req, res, next) {
+
+  ref.child(req.query.id).once('value', function(usersnapshot){
+    res.send(usersnapshot.child('/addedBroadcasts'));
+  });
+
+  
+  
+});
 
 module.exports = router;
