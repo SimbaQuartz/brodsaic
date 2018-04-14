@@ -39,6 +39,7 @@ export default class Login extends React.Component {
 
         var user= await AsyncStorage.getItem('user');
         if(user!==null){
+            
             this.props.navigation.navigate('Profile');
         }
     }
@@ -72,7 +73,7 @@ export default class Login extends React.Component {
     );
   }
     login=()=>{
-        fetch('http://192.168.137.1:3000/users',{
+        fetch('http://192.168.0.100:3000/users',{
             method:'POST',
             headers:{
                 'Accept':'application/json',
