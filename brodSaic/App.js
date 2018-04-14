@@ -9,6 +9,8 @@ import {
 } from 'react-navigation';
 import Login from './app/components/Login/Login';
 import Profile from './app/components/Login/Profile';
+import SideMenu from './app/components/Screens/SideMenu';
+import Broadcast from './app/components/Screens/Broadcast';
 
 const Application = DrawerNavigator({
   Login: {
@@ -17,13 +19,13 @@ const Application = DrawerNavigator({
   Profile: {
     screen: Profile
   },
+  Broadcast:{
+    screen: Broadcast
+  },
 
 }, {
-  navigationOptions: {
-    header: false,
-  } 
-
-
+  contentComponent: SideMenu,
+  drawerWidth: 300
 });
 
 export default class App extends React.Component {
