@@ -54,7 +54,7 @@ class SideMenu extends Component {
         <View style={styles.footerContainer}>
             <TouchableOpacity
                 onPress={this.logoutNavigateToScreen('Login')}>
-                <Text>Let's Roll</Text>
+                <Text>ROLL OUT</Text>
             </TouchableOpacity>
         </View>
       </View>

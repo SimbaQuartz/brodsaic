@@ -1,17 +1,36 @@
 import React from 'react';
-import {StyleSheet, Text, View, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, AsyncStorage,ScrollView,FlatList} from 'react-native';
-import {List,ListView} from 'react-native-elements';
+import {StyleSheet, Text, View, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, AsyncStorage, ScrollView, FlatList, Alert, ActivityIndicator, Platform} from 'react-native';
+import {List,ListView,ListItem,SearchBar} from 'react-native-elements';
 import {StackNavigator} from 'react-navigation';
 export default class Broadcast extends React.Component {
     constructor(props){
         super(props);
         this.state ={
-            username: ''
+            username: '',
+            loading: false,
+            data: [],
+            page: 1,
+            seed: 1,
+            error: null,
+            refreshing: false
         }
     }
     componentDidMount(){
         
         this._loadInitialState().done();
+
+        FlatListItemSeparator = () => {
+            return (
+              <View
+                style={{
+                  height: 1,
+                  width: "100%",
+                  backgroundColor: "#607D8B",
+                }}
+            />
+            );
+        }
+
 
     }
     _loadInitialState=async()=>{
@@ -23,25 +42,98 @@ export default class Broadcast extends React.Component {
                 username:user
             });
             // }
-            console.log(this.state.username+'--*********************');
         this.broadcastList();
-            
-    }
-    render() {
-        function listCreator(a){
-            var b;
-            for(i=0;i<a.length;i++){
 
-            }
-        }
-    return ( 
-        <Text>{JSON.stringify(this.state.myBroadcastLists)}</Text>
-    );
-  }
+    }
+
+    handleRefresh = () => {
+        this.setState(
+          {
+            page: 1,
+            seed: this.state.seed + 1,
+            refreshing: true
+          },
+          () => {
+            this.broadcastList();
+          }
+        );
+      };
+    
+      handleLoadMore = () => {
+        this.setState(
+          {
+            page: this.state.page + 1
+          },
+          () => {
+            this.broadcastList();
+          }
+        );
+      };
+    
+      renderSeparator = () => {
+        return (
+          <View
+            style={{
+              height: 1,
+              width: "86%",
+              backgroundColor: "#CED0CE",
+              marginLeft: "14%"
+            }}
+          />
+        );
+      };
+    
+      renderHeader = () => {
+        return <SearchBar placeholder="Type Here..." lightTheme round />;
+      };
+    
+      renderFooter = () => {
+        if (!this.state.loading) return null;
+    
+        return (
+          <View
+            style={{
+              paddingVertical: 20,
+              borderTopWidth: 1,
+              borderColor: "#CED0CE"
+            }}
+          >
+            <ActivityIndicator animating size="large" />
+          </View>
+        );
+      };
+    
+
+    render() {
+        return (
+          <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
+            <FlatList
+              data={this.state.myBroadcastLists}
+              renderItem={({ item }) => (
+                <ListItem
+                  roundAvatar
+                  title={`${item.name}`}
+                  subtitle={item.operator.name}
+                //   avatar={{ uri: item.picture.thumbnail }}
+                  containerStyle={{ borderBottomWidth: 0 }}
+                />
+              )}
+            //   keyExtractor={item => item.email}
+              ItemSeparatorComponent={this.renderSeparator}
+              ListHeaderComponent={this.renderHeader}
+              ListFooterComponent={this.renderFooter}
+              onRefresh={this.handleRefresh}
+              refreshing={this.state.refreshing}
+              onEndReached={this.handleLoadMore}
+              onEndReachedThreshold={50}
+            />
+          </List>
+        );
+      }
   
   broadcastList=()=>{
-      console.log(this.state.username+'////////////////////////////////////////////////////');
-        fetch(`http://brodsaic.herokuapp.com/users/getBroadcastList?id=${this.state.username}`,{
+      
+        fetch(`https://brodsaic.herokuapp.com/users/getBroadcastList?id=${this.state.username}`,{
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -55,10 +147,12 @@ export default class Broadcast extends React.Component {
             if(res.success===true){
                 AsyncStorage.setItem('user',this.state.username);
                 AsyncStorage.setItem('loginSuccess',true);
-                console.log((res.userBroadcastList));
                 AsyncStorage.setItem('myBroadcastLists',res.userBroadcastList);
+                var obj = res.userBroadcastList;
+                console.log((obj));
                 this.setState({
-                    myBroadcastLists:res.userBroadcastList
+                    myBroadcastLists:obj,
+                    isLoading: false
                 });
             }
             else{
@@ -112,7 +206,19 @@ const styles=StyleSheet.create({
       footerContainer: {
         padding: 20,
         backgroundColor: 'lightgrey'
-    
-    
-      }
+      },
+      MainContainer :{
+
+        justifyContent: 'center',
+        flex:1,
+        margin: 10,
+        paddingTop: (Platform.OS === 'ios') ? 20 : 0,
+        
+        },
+        
+        FlatListItemStyle: {
+            padding: 10,
+            fontSize: 18,
+            height: 44,
+          },
 })
