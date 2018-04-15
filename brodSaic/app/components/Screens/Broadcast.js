@@ -10,19 +10,24 @@ export default class Broadcast extends React.Component {
         }
     }
     componentDidMount(){
+        
         this._loadInitialState().done();
+
     }
     _loadInitialState=async()=>{
         var user= await AsyncStorage.getItem('user');
-        console.log(user+'*********************')
-        if(user!==null){
+        
+        
+        // if(user!==null){
             this.setState({
                 username:user
             });
-        }
+            // }
+            console.log(this.state.username+'--*********************');
+        this.broadcastList();
+            
     }
     render() {
-        this.broadcastList();
         function listCreator(a){
             var b;
             for(i=0;i<a.length;i++){
@@ -30,25 +35,13 @@ export default class Broadcast extends React.Component {
             }
         }
     return ( 
-        <List>
-            <FlatList
-                data={this.state.myBroadcastLists}
-                renderItem={({item})=>(
-                    <ListItem
-                        roundAvatar
-                        title={`${item.name}`}
-                        subtitle={item.operator}
-                    />
-                )
-
-                }
-            />
-        </List>
+        <Text>{JSON.stringify(this.state.myBroadcastLists)}</Text>
     );
   }
+  
   broadcastList=()=>{
-      console.log(this.state.username);
-        fetch(`http://192.168.0.100:3000/users/getBroadcastList?id=401603018`,{
+      console.log(this.state.username+'////////////////////////////////////////////////////');
+        fetch(`http://brodsaic.herokuapp.com/users/getBroadcastList?id=${this.state.username}`,{
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -62,7 +55,7 @@ export default class Broadcast extends React.Component {
             if(res.success===true){
                 AsyncStorage.setItem('user',this.state.username);
                 AsyncStorage.setItem('loginSuccess',true);
-                console.log(Object.keys(res.userBroadcastList));
+                console.log((res.userBroadcastList));
                 AsyncStorage.setItem('myBroadcastLists',res.userBroadcastList);
                 this.setState({
                     myBroadcastLists:res.userBroadcastList
