@@ -49,20 +49,20 @@ router.post('/getBroadcastList', function(req, res, next) {
 
     
     var userBroadcastMap=list.toJSON();
-    var userBroadcastlist=Object.keys(list.toJSON());
+    
+    var userBroadcastlist=Object.keys(userBroadcastMap);
 
-    var availableBroadcastLists={};
+    var availableBroadcastLists=[];
     
     var a=brodref.on('value',function(brodcastSnapshot){
       
       userBroadcastlist.forEach(element => {
         if(list.child(element).val()===true){
-          availableBroadcastLists[element]=brodcastSnapshot.child(element).toJSON();
+          availableBroadcastLists.push(brodcastSnapshot.child(element).toJSON());
           
         }
       });
     });
-    
     console.log(availableBroadcastLists);    
     res.send({userBroadcastList:availableBroadcastLists,success:true});
   });
