@@ -16,7 +16,8 @@ export default class Profile extends React.Component {
         super(props);
         this.state ={
             loggedInUser: '',
-            userType: ''
+            userType: '',
+            nameofuser:''
         }
     }
 
@@ -27,15 +28,20 @@ export default class Profile extends React.Component {
     _loadInitialState=async()=>{
         var value= await AsyncStorage.getItem('user');
         var usertype= await AsyncStorage.getItem('userType');
+        var nameOfUser= await AsyncStorage.getItem('nameOfUser');
         this.setState({
-            userType: usertype
+            userType: usertype,
+            nameOfUser:nameOfUser
           });
         if(value!==null){
+            this.props.navigation.navigate('Profile');
+        }else{
             this.props.navigation.navigate('Profile');
         }
     }
 
     render() {
+        
         if(this.state.userType=="reciever"){
             tinp=<Text>Welcome buddy</Text>
         }
@@ -48,7 +54,7 @@ export default class Profile extends React.Component {
     return ( 
         
             <View style={styles.container}>
-                <Text style={styles.text}>This is you profile dear {this.state.userType}</Text>
+                <Text style={styles.text}>This is you profile dear {this.state.nameOfUser} . You are a {this.state.userType}</Text>
                 {tinp}
             </View>
             
