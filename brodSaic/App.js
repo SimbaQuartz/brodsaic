@@ -12,8 +12,12 @@ import Login from './app/components/Login/Login';
 import Profile from './app/components/Login/Profile';
 import SideMenu from './app/components/Screens/SideMenu';
 import Broadcast from './app/components/Screens/Broadcast';
+import WelcomePage from './app/components/Screens/WelcomePage';
 
 const Application = DrawerNavigator({
+  WelcomePage:{
+    screen: WelcomePage
+  },
   Profile: {
     screen: Profile
   },
