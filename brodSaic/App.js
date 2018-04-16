@@ -2,7 +2,8 @@ import React from 'react';
 import {
   StyleSheet,
   Text,
-  View
+  View,
+  AsyncStorage
 } from 'react-native';
 import {
   DrawerNavigator
@@ -13,11 +14,11 @@ import SideMenu from './app/components/Screens/SideMenu';
 import Broadcast from './app/components/Screens/Broadcast';
 
 const Application = DrawerNavigator({
-  Login: {
-    screen: Login
-  },
   Profile: {
     screen: Profile
+  },
+  Login: {
+    screen: Login
   },
   Broadcast:{
     screen: Broadcast

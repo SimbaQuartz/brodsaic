@@ -33,10 +33,8 @@ export default class Profile extends React.Component {
             userType: usertype,
             nameOfUser:nameOfUser
           });
-        if(value!==null){
-            this.props.navigation.navigate('Profile');
-        }else{
-            this.props.navigation.navigate('Profile');
+        if(value===null){
+            this.props.navigation.navigate('Login');
         }
     }
 
