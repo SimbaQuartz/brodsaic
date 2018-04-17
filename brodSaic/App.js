@@ -14,7 +14,7 @@ import SideMenu from './app/components/Screens/SideMenu';
 import Chatview from './app/components/Screens/Chatview';
 import Broadcast from './app/components/Screens/Broadcast';
 import WelcomePage from './app/components/Screens/WelcomePage';
-
+import NotificationScreen from './app/components/Screens/NotificationScreen';
 const Application = DrawerNavigator({
   WelcomePage:{
     screen: WelcomePage
@@ -31,9 +31,12 @@ const Application = DrawerNavigator({
   Chatview:{
     screen: Chatview
   },
-  
+  NotificationScreen:{
+    screen: NotificationScreen
+  },
 
-}, {
+}, 
+{
   contentComponent: SideMenu,
   drawerWidth: 300
 });

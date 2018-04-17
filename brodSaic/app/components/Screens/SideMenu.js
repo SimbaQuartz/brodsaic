@@ -46,8 +46,8 @@ class SideMenu extends Component {
               <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Broadcast')}>
                 Broadcasts
               </Text>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page3')}>
-                Page3
+              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('NotificationScreen')}>
+                Notifications
               </Text>
             </View>
           </View>

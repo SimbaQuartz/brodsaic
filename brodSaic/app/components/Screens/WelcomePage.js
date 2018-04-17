@@ -35,44 +35,7 @@ import {
             return(
                 <View>
                 <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
-                <Text> Welcome SAIC </Text>
+               
                 </View>
             );
         }
