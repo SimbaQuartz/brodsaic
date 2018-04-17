@@ -111,7 +111,12 @@ export default class Broadcast extends React.Component {
           </View>
         );
       };
-    
+      _onPressItem = (user) => { 
+        console.log('running onpress function');
+        this.props.navigation.navigate('Chatview',{
+            user: user   //your user details
+        })
+     };
 
     render() {
         return (
@@ -119,14 +124,15 @@ export default class Broadcast extends React.Component {
             <FlatList
               data={this.state.myBroadcastLists}
               renderItem={({ item }) => (
+                <TouchableOpacity onPress={()=>{this._onPressItem(item.operator.id)}}>
                 <ListItem
                   roundAvatar
                   title={`${item.name}`}
                   subtitle={item.operator.name}
-                  onPress={() => this.props.navigation.navigate('Chatview')}
                 //   avatar={{ uri: item.picture.thumbnail }}
                   containerStyle={{ borderBottomWidth: 0 }}
                 />
+                </TouchableOpacity>
               )}
             //   keyExtractor={item => item.email}
               ItemSeparatorComponent={this.renderSeparator}

@@ -10,9 +10,11 @@ import {
    TextInput,
    Dimensions,
    KeyboardAvoidingView,
+   AsyncStorage,
  } from 'react-native';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+var tinp;
 
 const { width, height } = Dimensions.get('window');
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -62,7 +64,7 @@ class Chatview extends React.Component {
   reply() {
     conversation.unshift({
       sent: false,
-      msg: 'React Native  is Awesome!',
+      msg:'Hi Buddy',
     });
     this.setState({
       dataSource: ds.cloneWithRows(conversation),
@@ -85,8 +87,32 @@ class Chatview extends React.Component {
     }
   }
 
+  componentDidMount(){
+    this._loadInitialState().done();}
+    
+  _loadInitialState=async()=>{
+    var ate=await AsyncStorage.getItem('user')
+    .then(req => JSON.parse(req))
+    .then(json => this.setState({username:JSON.stringify(json)}));
 
+}
   render() {
+
+    if(this.props.navigation.state.params.user===this.state.username){
+      tinp= <TextInput
+      style={{ flex: 1 }}
+      value={this.state.msg}
+      onChangeText={msg => this.setState({ msg })}
+      blurOnSubmit={false}
+      onSubmitEditing={() => this.send()}
+      placeholder="Type a message"
+      returnKeyType="send"
+    />
+  }
+  else{
+      tinp=<Text>You are a reciever :)</Text>
+  }
+
     return (
       <View style={{ flex: 1 }}>
         <ImageBackground
@@ -135,15 +161,7 @@ class Chatview extends React.Component {
               style={{ flex: 1 }}
             />
             <View style={styles.input}>
-              <TextInput
-                style={{ flex: 1 }}
-                value={this.state.msg}
-                onChangeText={msg => this.setState({ msg })}
-                blurOnSubmit={false}
-                onSubmitEditing={() => this.send()}
-                placeholder="Type a message"
-                returnKeyType="send"
-              />
+             {tinp}
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
