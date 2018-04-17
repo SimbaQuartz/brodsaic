@@ -11,6 +11,7 @@ import {
 import Login from './app/components/Login/Login';
 import Profile from './app/components/Login/Profile';
 import SideMenu from './app/components/Screens/SideMenu';
+import Chatview from './app/components/Screens/Chatview';
 import Broadcast from './app/components/Screens/Broadcast';
 import WelcomePage from './app/components/Screens/WelcomePage';
 
@@ -27,6 +28,10 @@ const Application = DrawerNavigator({
   Broadcast:{
     screen: Broadcast
   },
+  Chatview:{
+    screen: Chatview
+  },
+  
 
 }, {
   contentComponent: SideMenu,

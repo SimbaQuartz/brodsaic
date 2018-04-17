@@ -42,6 +42,15 @@ export default class Broadcast extends React.Component {
                 username:user
             });
             // }
+        var broadcastList=await AsyncStorage.getItem('userBroadcastList')
+        .then(req => JSON.parse(req))
+        .then(json => console.log(json+'*****************************************2 i am running'))
+        .catch(error => console.log('error!'))
+        if(broadcastList!==null){
+          this.setState({
+            myBroadcastLists:broadcastList
+          })
+        }
         this.broadcastList();
 
     }
@@ -114,6 +123,7 @@ export default class Broadcast extends React.Component {
                   roundAvatar
                   title={`${item.name}`}
                   subtitle={item.operator.name}
+                  onPress={() => this.props.navigation.navigate('Chatview')}
                 //   avatar={{ uri: item.picture.thumbnail }}
                   containerStyle={{ borderBottomWidth: 0 }}
                 />
@@ -147,7 +157,10 @@ export default class Broadcast extends React.Component {
             if(res.success===true){
                 AsyncStorage.setItem('user',this.state.username);
                 AsyncStorage.setItem('loginSuccess',true);
-                AsyncStorage.setItem('myBroadcastLists',res.userBroadcastList);
+
+                AsyncStorage.setItem('userBroadcastList', JSON.stringify(res.userBroadcastList))
+                .then(json => console.log('success!'))
+                .catch(error => console.log('error!'));
                 var obj = res.userBroadcastList;
                 console.log((obj));
                 this.setState({
