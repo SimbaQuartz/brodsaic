@@ -42,14 +42,15 @@ export default class Broadcast extends React.Component {
                 username:user
             });
             // }
-        var broadcastList=await AsyncStorage.getItem('userBroadcastList')
-        .then(req => JSON.parse(req))
-        .then(json => console.log(json+'*****************************************2 i am running'))
-        .catch(error => console.log('error!'))
+        var broadcastList=await AsyncStorage.getItem('userBroadcastList');
         if(broadcastList!==null){
-          this.setState({
-            myBroadcastLists:broadcastList
+          await this.setState({myBroadcastLists:AsyncStorage.getItem('userBroadcastList')
+          .then(req => JSON.parse(req))
+          .then(json => this.setState({
+            myBroadcastLists:json
           })
+          .catch(error => console.log('error!'))
+          )})
         }
         this.broadcastList();
 
