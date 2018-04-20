@@ -1,0 +1,7 @@
+{
+    "appId":"SOME_APP_ID",
+    "key":"SOME_APP_KEY",
+    "secret":"SOME_APP_SECRET",
+    "cluster":"SOME_CLUSTER",
+    "encrypted":true
+}

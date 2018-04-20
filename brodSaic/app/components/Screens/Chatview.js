@@ -14,6 +14,15 @@ import {
  } from 'react-native';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+var admin = require("firebase-admin");
+var exists;
+var serviceAccount = require("../../../brodsaic-firebase-adminsdk-kh401-3a18a9964a.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://brodsaic.firebaseio.com"
+});
+
 var tinp;
 
 const { width, height } = Dimensions.get('window');
@@ -97,77 +106,13 @@ class Chatview extends React.Component {
 
 }
   render() {
-
-    if(this.props.navigation.state.params.user===this.state.username){
-      tinp= <TextInput
-      style={{ flex: 1 }}
-      value={this.state.msg}
-      onChangeText={msg => this.setState({ msg })}
-      blurOnSubmit={false}
-      onSubmitEditing={() => this.send()}
-      placeholder="Type a message"
-      returnKeyType="send"
-    />
-  }
-  else{
-      tinp=<Text>You are a reciever :)</Text>
-  }
-
     return (
-      <View style={{ flex: 1 }}>
-        <ImageBackground
-          source={require('../../../assets/icons/home-icon.png')}
-          style={styles.image}
-        >
-          <View style={styles.header}>
-            <View style={styles.left} >
-              <TouchableOpacity onPress={() => this.props.navigator.pop()}>
-                <Icon
-                  name="arrow-back" color="#fff" size={23}
-                  style={{ paddingLeft: 10 }}
-                />
-              </TouchableOpacity>
-              <Image
-                source={{ uri: this.props.image }}
-                style={styles.chatImage}
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigator.push({
-                    id: 'ProfileView',
-                    name: this.props.name,
-                    image: this.props.image,
-                  });
-                }}
-              >
-                <Text style={styles.chatTitle}>{this.props.name}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.right} >
-              <Icon name="call" color="#fff" size={23} style={{ padding: 5 }} />
-              <Icon name="attach-file" color="#fff" size={23} style={{ padding: 5 }} />
-              <Icon name="more-vert" color="#fff" size={23} style={{ padding: 5 }} />
-            </View>
-          </View>
-          <KeyboardAvoidingView behavior="padding" style={styles.keyboard}>
-            <ListView
-              enableEmptySections
-              noScroll
-              renderScrollComponent={props =>
-                <InvertibleScrollView {...props} inverted />}
-              dataSource={this.state.dataSource}
-              contentContainerStyle={{ justifyContent: 'flex-end' }}
-              renderRow={rowData => <EachMsg {...rowData} image={this.props.image} />}
-              style={{ flex: 1 }}
-            />
-            <View style={styles.input}>
-             {tinp}
-            </View>
-          </KeyboardAvoidingView>
-        </ImageBackground>
-      </View>);
+    <View>
+      <Text>This is your message box</Text>
+    </View>
+    )
   }
-        }
+}
 
 export default Chatview;
 

@@ -13,6 +13,7 @@ class SideMenu extends Component {
   logoutNavigateToScreen = (route) => () => {
     AsyncStorage.removeItem('user',null);
     AsyncStorage.removeItem('userBroadcastList',null);
+    console.log('Removed user and broadcast information Successfully!');
     const navigateAction = NavigationActions.navigate({
       routeName: route
     });

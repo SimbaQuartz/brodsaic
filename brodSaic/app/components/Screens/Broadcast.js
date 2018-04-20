@@ -42,18 +42,23 @@ export default class Broadcast extends React.Component {
                 username:user
             });
             // }
-        var broadcastList=await AsyncStorage.getItem('userBroadcastList');
-        if(broadcastList!==null){
-          await this.setState({myBroadcastLists:AsyncStorage.getItem('userBroadcastList')
-          .then(req => JSON.parse(req))
-          .then(json => this.setState({
-            myBroadcastLists:json
-          })
-          .catch(error => console.log('error!'))
-          )})
-        }
-        this.broadcastList();
-
+            try {
+              var myArray = await AsyncStorage.getItem('userBroadcastList');
+              if (myArray !== null) {
+                // We have data!!
+                this.setState({myBroadcastLists:JSON.parse(myArray)});
+                console.log('**Passing the array to state**'+JSON.parse(myArray));
+              } 
+              
+              else{
+                console.log('Broadcast List not available in Async Storage');
+                await this.broadcastList();
+              }
+            } catch (error) {
+              console.log("Error retrieving data")
+            }
+            
+       
     }
 
     handleRefresh = () => {
@@ -62,17 +67,6 @@ export default class Broadcast extends React.Component {
             page: 1,
             seed: this.state.seed + 1,
             refreshing: true
-          },
-          () => {
-            this.broadcastList();
-          }
-        );
-      };
-    
-      handleLoadMore = () => {
-        this.setState(
-          {
-            page: this.state.page + 1
           },
           () => {
             this.broadcastList();
@@ -148,7 +142,7 @@ export default class Broadcast extends React.Component {
         );
       }
   
-  broadcastList=()=>{
+  broadcastList=async()=>{
       
         fetch(`https://brodsaic.herokuapp.com/users/getBroadcastList?id=${this.state.username}`,{
             method:'POST',
@@ -165,14 +159,18 @@ export default class Broadcast extends React.Component {
                 AsyncStorage.setItem('user',this.state.username);
                 AsyncStorage.setItem('loginSuccess',true);
 
-                AsyncStorage.setItem('userBroadcastList', JSON.stringify(res.userBroadcastList))
-                .then(json => console.log('success!'))
-                .catch(error => console.log('error!'));
-                var obj = res.userBroadcastList;
-                console.log((obj));
+                try {
+                  AsyncStorage.setItem('userBroadcastList', JSON.stringify(res.userBroadcastList));
+
+                  
+
+                  this.setState({myBroadcastLists:JSON.stringify(res.userBroadcastList)})
+                } catch (error) {
+                  console.log('Error saving data');
+                }
                 this.setState({
-                    myBroadcastLists:obj,
-                    isLoading: false
+                    loading: false,
+                    refreshing: false
                 });
             }
             else{

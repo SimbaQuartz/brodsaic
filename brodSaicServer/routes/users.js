@@ -52,7 +52,7 @@ router.post('/getBroadcastList', function(req, res, next) {
     
     var userBroadcastlist=Object.keys(userBroadcastMap);
 
-    var availableBroadcastLists=[];
+    var availableBroadcastLists=[{'hi':true}];
     
     var a=brodref.on('value',function(brodcastSnapshot){
       
