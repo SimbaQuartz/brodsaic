@@ -12,6 +12,7 @@ admin.initializeApp({
 });
 var ref=admin.database().ref("/users");
 var brodref=admin.database().ref("/broadcastList");
+var msgref=admin.database().ref("/broadcastMessages");
 
 
 router.post('/', function(req, res, next) {
@@ -43,7 +44,14 @@ router.post('/', function(req, res, next) {
   });
 
 });
+
+router.post('/messages', function(req, res, next) {
+  msgref.child(req.query.id).push({message:req.body.message});
+  res.send({success:true,message:req.body.message});
+});
+
 router.post('/getBroadcastList', function(req, res, next) {
+
 
   ref.child(req.query.id).child('/addedBroadcasts').on('value', function(list){
 

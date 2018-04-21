@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 router.put('/usrmsg/:name', function(req, res) { // (3)
     console.log('User joined: ' + req.params.name);
-    pusherClient.trigger('chat_channel', 'join', {
+    pusherClient.trigger('my-channel', 'my-event', {
         name: req.params.name
     });
     res.sendStatus(204);
@@ -19,7 +19,7 @@ router.put('/usrmsg/:name', function(req, res) { // (3)
 
 router.delete('/usrmsg/:name', function(req, res) { // (4)
     console.log('User left: ' + req.params.name);
-    pusherClient.trigger('chat_channel', 'part', {
+    pusherClient.trigger('my-channel', 'my-event', {
         name: req.params.name
     });
     res.sendStatus(204);
@@ -27,7 +27,7 @@ router.delete('/usrmsg/:name', function(req, res) { // (4)
 
 router.post('/usrmsg/:name/messages', function(req, res) { // (5)
     console.log('User ' + req.params.name + ' sent message: ' + req.body.message);
-    pusherClient.trigger('chat_channel', 'message', {
+    pusherClient.trigger('my-channel', 'my-event', {
         name: req.params.name,
         message: req.body.message
     });

@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, AsyncStorage, ScrollView, FlatList, Alert, ActivityIndicator, Platform} from 'react-native';
 import {List,ListView,ListItem,SearchBar} from 'react-native-elements';
 import {StackNavigator} from 'react-navigation';
+
 export default class Broadcast extends React.Component {
     constructor(props){
         super(props);
@@ -106,10 +107,12 @@ export default class Broadcast extends React.Component {
           </View>
         );
       };
-      _onPressItem = (user) => { 
+      _onPressItem = (item) => { 
         console.log('running onpress function');
         this.props.navigation.navigate('Chatview',{
-            user: user   //your user details
+            user:item.operator.id,
+            id:item.id
+               //your user details
         })
      };
 
@@ -119,7 +122,7 @@ export default class Broadcast extends React.Component {
             <FlatList
               data={this.state.myBroadcastLists}
               renderItem={({ item }) => (
-                <TouchableOpacity onPress={()=>{this._onPressItem(item.operator.id)}}>
+                <TouchableOpacity onPress={()=>{this._onPressItem(item)}}>
                 <ListItem
                   roundAvatar
                   title={`${item.name}`}
@@ -144,7 +147,7 @@ export default class Broadcast extends React.Component {
   
   broadcastList=async()=>{
       
-        fetch(`https://brodsaic.herokuapp.com/users/getBroadcastList?id=${this.state.username}`,{
+        fetch(`https://brodsaic.herokuapp.com//users/getBroadcastList?id=${this.state.username}`,{
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -161,9 +164,6 @@ export default class Broadcast extends React.Component {
 
                 try {
                   AsyncStorage.setItem('userBroadcastList', JSON.stringify(res.userBroadcastList));
-
-                  
-
                   this.setState({myBroadcastLists:JSON.stringify(res.userBroadcastList)})
                 } catch (error) {
                   console.log('Error saving data');
