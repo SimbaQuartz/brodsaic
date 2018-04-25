@@ -10,6 +10,7 @@ import {
   AsyncStorage
 } from 'react-native';
 import {StackNavigator} from 'react-navigation';
+var ips=require('../Screens/ip.json');
 
 export default class Login extends React.Component {
 
@@ -73,7 +74,7 @@ export default class Login extends React.Component {
     );
   }
     login=()=>{
-        fetch('https://brodsaic.herokuapp.com/users',{
+        fetch(`${ips.usingip}/users`,{
             method:'POST',
             headers:{
                 'Accept':'application/json',
