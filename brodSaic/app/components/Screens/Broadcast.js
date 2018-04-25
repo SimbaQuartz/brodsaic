@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, TextInput, KeyboardAvoidingView, Keyboard, TouchableOpacity, AsyncStorage, ScrollView, FlatList, Alert, ActivityIndicator, Platform} from 'react-native';
 import {List,ListView,ListItem,SearchBar} from 'react-native-elements';
 import {StackNavigator} from 'react-navigation';
+var ips=require('./ip.json');
 
 export default class Broadcast extends React.Component {
     constructor(props){
@@ -47,6 +48,8 @@ export default class Broadcast extends React.Component {
               var myArray = await AsyncStorage.getItem('userBroadcastList');
               if (myArray !== null) {
                 // We have data!!
+                console.log('Broadcast List is available in Async Storage\n'+myArray);
+
                 this.setState({myBroadcastLists:JSON.parse(myArray)});
                 console.log('**Passing the array to state**'+JSON.parse(myArray));
               } 
@@ -110,13 +113,14 @@ export default class Broadcast extends React.Component {
       _onPressItem = (item) => { 
         console.log('running onpress function');
         this.props.navigation.navigate('Chatview',{
-            user:item.operator.id,
-            id:item.id
+          id:item.id,
+          brodcasterId:item.operator.id,
                //your user details
         })
      };
 
     render() {
+      console.log('this.state.myBroadcastLists'+this.state.myBroadcastLists);
         return (
           <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
             <FlatList
@@ -136,8 +140,8 @@ export default class Broadcast extends React.Component {
               ItemSeparatorComponent={this.renderSeparator}
               ListHeaderComponent={this.renderHeader}
               ListFooterComponent={this.renderFooter}
-              onRefresh={this.handleRefresh}
-              refreshing={this.state.refreshing}
+              // onRefresh={this.handleRefresh}
+              // refreshing={this.state.refreshing}
               onEndReached={this.handleLoadMore}
               onEndReachedThreshold={50}
             />
@@ -146,8 +150,7 @@ export default class Broadcast extends React.Component {
       }
   
   broadcastList=async()=>{
-      
-        fetch(`https://brodsaic.herokuapp.com//users/getBroadcastList?id=${this.state.username}`,{
+        fetch(`${ips.usingip}/users/getBroadcastList?id=${this.state.username}`,{
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -179,6 +182,7 @@ export default class Broadcast extends React.Component {
             }
         })
         .done();
+        
     }
 }
 const styles=StyleSheet.create({
@@ -232,7 +236,7 @@ const styles=StyleSheet.create({
         margin: 10,
         paddingTop: (Platform.OS === 'ios') ? 20 : 0,
         
-        },
+      },
         
         FlatListItemStyle: {
             padding: 10,
