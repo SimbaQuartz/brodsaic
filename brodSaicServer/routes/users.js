@@ -15,6 +15,31 @@ var ref = admin.database().ref('/users');
 var brodref = admin.database().ref('/broadcastList');
 var msgref = admin.database().ref('/broadcastMessages');
 
+router.get('/getMessages',function(req,res,next){
+  broadcastId=req.query.bid;
+  usedId=req.query.id;
+  msgref.child(broadcastId).once('value',function(messageSnapshot){
+    var listmap=messageSnapshot.toJSON();
+    var messageArrayKeys=Object.keys(listmap);
+    var messageArray=[];
+    
+    async.eachSeries(
+      messageArrayKeys,
+      function(element, eachCallback) {
+        messageArray.push(messageSnapshot.child(element).toJSON());
+        eachCallback();
+      },
+      function(error) {
+        if (!error) {
+          console.log(messageArray); 
+          res.send({messages:messageArray});
+        }
+      }
+    );
+
+  });
+});
+
 router.post('/', function(req, res, next) {
   usernameToFind = req.body.username;
   password = req.body.password;
