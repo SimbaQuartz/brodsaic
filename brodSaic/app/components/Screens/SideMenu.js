@@ -34,7 +34,7 @@ class SideMenu extends Component {
               BrodSaic
             </Text>
             <View style={styles.navSectionStyle}>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Profile')}>
+              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Profile').bind(this)}>
               Profile
               </Text>
             </View>
