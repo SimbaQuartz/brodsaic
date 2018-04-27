@@ -1,0 +1,5 @@
+{
+    "local":"localhost:3000",
+    "heroku":"brodsaic.herokuapp.com",
+    "usingip":"http://172.20.10.3:3000"
+}

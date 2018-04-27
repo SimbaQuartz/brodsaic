@@ -7,11 +7,38 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  Platform, 
+  BackHandler, 
+  ToastAndroid
 } from 'react-native';
 import {StackNavigator} from 'react-navigation';
+var ips=require('../Screens/ip.json');
 
 export default class Login extends React.Component {
+
+    componentWillMount()
+        {
+          /*setTimeout(
+            ()=>{
+             this.props.navigation.navigate('loginScreen');
+            },3000
+     );*/
+     if (Platform.OS !== 'android') return
+     BackHandler.addEventListener('hardwareBackPress', () => {
+          const { dispatch } = this.props;
+          // dispatch({ type: 'Navigation/BACK' });
+          // dispatch({ type: 'Back' })
+          ToastAndroid.showWithGravityAndOffset(
+                    'Press Home to minize the App!',
+                    ToastAndroid.LONG,
+                    ToastAndroid.BOTTOM,
+                    25,
+                    50
+                  );
+          return true;
+    });
+}
 
     constructor(props){
         super(props);
@@ -27,18 +54,19 @@ export default class Login extends React.Component {
     
     _loadInitialState=async()=>{
 
-        try {
-            const value = await AsyncStorage.getItem('@MySuperStore:key');
-            if (value !== null){
-              // We have data!!
-              console.log(value);
-            }
-          } catch (error) {
-            // Error retrieving data
-          }
+        // try {
+        //     const value = await AsyncStorage.getItem('@MySuperStore:key');
+        //     if (value !== null){
+        //       // We have data!!
+        //       console.log(value);
+        //     }
+        //   } catch (error) {
+        //     // Error retrieving data
+        //   }
 
-        var value= await AsyncStorage.getItem('user');
-        if(value!==null){
+        var user= await AsyncStorage.getItem('user');
+        if(user!==null){
+            
             this.props.navigation.navigate('Profile');
         }
     }
@@ -72,7 +100,7 @@ export default class Login extends React.Component {
     );
   }
     login=()=>{
-        fetch('http://192.168.137.1:3000/users',{
+        fetch(`${ips.usingip}/users`,{
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -87,12 +115,14 @@ export default class Login extends React.Component {
         .then((response)=> response.json())
         .then((res)=>{
             if(res.success===true){
-                AsyncStorage.setItem('user',res.user);
+                AsyncStorage.setItem('user',this.state.username);
                 AsyncStorage.setItem('userType',res.usertype);
                 AsyncStorage.setItem('loginSuccess',true);
+                AsyncStorage.setItem('nameOfUser',res.nameOfUser);
                 this.props.navigation.navigate('Profile');
             }
             else{
+                AsyncStorage.setItem('loginSuccess',false);
                 alert(res.message);
             }
         })
@@ -131,5 +161,5 @@ const styles=StyleSheet.create({
         alignItems: 'center',
     }
 
-    
+
 })
