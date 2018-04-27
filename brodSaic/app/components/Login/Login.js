@@ -7,12 +7,38 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  Platform, 
+  BackHandler, 
+  ToastAndroid
 } from 'react-native';
 import {StackNavigator} from 'react-navigation';
 var ips=require('../Screens/ip.json');
 
 export default class Login extends React.Component {
+
+    componentWillMount()
+        {
+          /*setTimeout(
+            ()=>{
+             this.props.navigation.navigate('loginScreen');
+            },3000
+     );*/
+     if (Platform.OS !== 'android') return
+     BackHandler.addEventListener('hardwareBackPress', () => {
+          const { dispatch } = this.props;
+          // dispatch({ type: 'Navigation/BACK' });
+          // dispatch({ type: 'Back' })
+          ToastAndroid.showWithGravityAndOffset(
+                    'Press Home to minize the App!',
+                    ToastAndroid.LONG,
+                    ToastAndroid.BOTTOM,
+                    25,
+                    50
+                  );
+          return true;
+    });
+}
 
     constructor(props){
         super(props);
